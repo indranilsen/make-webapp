@@ -29,10 +29,17 @@ do
 
 			Options:
 			-h, --help        Print usage information
+			-n, --name        Name of project
 			-l, --logfile     Specify directory for log file as parameter
 			-s, --silent      Do not print log messages to standard output\n"
 			exit
 			;;
+		--name | -n)
+			projectName="${1}"
+			if [ -z "$LOG_FILE" ]; then
+				echo "Specify log file path."
+				exit
+			fi
 		--silent | -s)
 			silent=1
 			;;
@@ -123,10 +130,15 @@ log() {
 	done
 }
 
+makeDirectories() {
+	root="$(pwd)/home/"
+	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
+}
+
 # ========================================
 #	SETUP
 # ========================================
 #checkBrewDependencies
 #installBrewDependencies
 
-log -n "THIS IS A LOG MESSAGE"
+makeDirectories
