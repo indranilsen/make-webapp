@@ -17,6 +17,7 @@ version="1.0.0"
 # Defaults
 silent=0
 saveLog=0
+nvar=0
 args=()
 
 while [ ! $# -eq 0 ]
@@ -35,11 +36,14 @@ do
 			exit
 			;;
 		--name | -n)
+			shift
+			nvar=1
 			projectName="${1}"
-			if [ -z "$LOG_FILE" ]; then
+			if [ -z "$projectName" ]; then
 				echo "Specify log file path."
 				exit
 			fi
+			;;
 		--silent | -s)
 			silent=1
 			;;
@@ -131,7 +135,7 @@ log() {
 }
 
 makeDirectories() {
-	root="$(pwd)/home/"
+	root="$(pwd)/$projectName"
 	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
 }
 
