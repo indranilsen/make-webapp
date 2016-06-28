@@ -18,6 +18,7 @@ version="1.0.0"
 silent=0
 saveLog=0
 nvar=0
+lvar=0
 args=()
 
 while [ ! $# -eq 0 ]
@@ -37,11 +38,12 @@ do
 			;;
 		--name | -n)
 			shift
-			nvar=1
 			projectName="${1}"
 			if [ -z "$projectName" ]; then
 				echo "Specify log file path."
 				exit
+			else
+				nvar=1
 			fi
 			;;
 		--silent | -s)
@@ -57,6 +59,8 @@ do
 			if [ -z "$LOG_FILE" ]; then
 				echo "Specify log file path."
 				exit
+			else
+				lvar=1
 			fi
 			saveLog=1
 			;;
@@ -126,12 +130,19 @@ log() {
 			*) echo 'Incorrect log usage. Flag required.'; exit;;
 		esac
 
-		if [ $silent -eq 1 ] && [ cleanPrint = false ]; then
+		if [ $silent -eq 1 ] && [ cleanPrint = false ] && [ $lvar -eq 1 ]; then
 				echo -e "${TAG:5}[$TIMESTAMP]:\n$OPTARG\n" >> $LOG_FILE
 		else
 			echo "$TAG$colorReset$OPTARG"
 		fi
 	done
+}
+
+checkReqArgs() {
+	if [ $nvar -ne 1 ]; then
+		log -e "Project name required"
+		exit
+	fi
 }
 
 makeDirectories() {
@@ -145,4 +156,5 @@ makeDirectories() {
 #checkBrewDependencies
 #installBrewDependencies
 
+checkReqArgs
 makeDirectories
