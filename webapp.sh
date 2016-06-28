@@ -29,6 +29,10 @@ do
 		--silent | -s)
 			silent=1
 			;;
+		--version | -v)
+			echo "$version"
+			exit
+			;;
 		--logfile | -l)
 			shift
 			LOG_FILE="${1}"
@@ -91,20 +95,23 @@ installBrewDependencies() {
 log() {
 	TAG=""
 	TIMESTAMP="$(date +"%Y-%m-%d:%H:%M:%S")"
+	cleanPrint=false
 	# e:error, m:message, l:log
-	while getopts "e:m:l:" option
+	local OPTIND;
+	while getopts "e:m:l:n:" option
 	do
 		case "${option}" in
 			m) TAG="$yellow[MSG] ";;	
 			e) TAG="$red[ERR] ";;
 			l) TAG="$cyan[LOG] ";;
+			n) TAG=""; cleanPrint=true;;
 			*) echo 'Incorrect log usage. Flag required.'; exit;;
 		esac
 
-		if [ $silent -eq 1 ]; then
+		if [ $silent -eq 1 ] && [ cleanPrint = false ]; then
 				echo -e "${TAG:5}[$TIMESTAMP]:\n$OPTARG\n" >> $LOG_FILE
-			else
-				echo "$TAG$colorReset$OPTARG"
+		else
+			echo "$TAG$colorReset$OPTARG"
 		fi
 	done
 }
@@ -115,4 +122,4 @@ log() {
 #checkBrewDependencies
 #installBrewDependencies
 
-log -m "THIS IS A LOG MESSAGE"
+log -n "THIS IS A LOG MESSAGE"
