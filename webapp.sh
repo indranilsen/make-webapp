@@ -23,7 +23,7 @@ while [ ! $# -eq 0 ]
 do
 	case "$1" in
 		--help | -h)
-			echo 'usage'
+			usage
 			exit
 			;;
 		--silent | -s)
@@ -114,6 +114,18 @@ log() {
 			echo "$TAG$colorReset$OPTARG"
 		fi
 	done
+}
+
+usage() {
+  	log -n "${scriptName} [OPTION]... [FILE]...
+
+	This script creates a boilerplate for an AngularJS web app.	
+
+	Options:
+	-h, --help        Print usage information
+	-l, --logfile     Specify directory for log file as parameter
+	-s, --silent      Do not print log messages to standard output
+	"
 }
 
 # ========================================
