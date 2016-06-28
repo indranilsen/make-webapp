@@ -11,16 +11,47 @@
 version="1.0.0"
 
 # ========================================
+#	FLAGS
+# ========================================
+
+# Defaults
+silent=0
+saveLog=0
+args=()
+
+while [ ! $# -eq 0 ]
+do
+	case "$1" in
+		--help | -h)
+			echo 'usage'
+			exit
+			;;
+		--silent | -s)
+			silent=1
+			;;
+		--logfile | -l)
+			shift
+			LOG_FILE="${1}"
+			if [ -z "$LOG_FILE" ]; then
+				echo "Specify log file path."
+				exit
+			fi
+			saveLog=1
+			;;
+	esac
+	shift
+done
+
+# ========================================
 #	VARIABLES
 # ========================================
 scriptName="${BASH_SOURCE[0]}"
 scriptPath="$(cd "$(dirname "scriptName" )" && pwd)"
-LOG_FILE="/Users/indranilsen/desktop/msg.log"
-homebrewDependencies=("neil")
 
+homebrewDependencies=("neil")
 install=()
 
-silent=false
+if [ $saveLog -eq 0 ]; then LOG_FILE=$(pwd)"/msg.log"; fi
 
 blue=$(tput setaf 3)
 red=$(tput setaf 1)
@@ -57,7 +88,7 @@ installBrewDependencies() {
 }
 
 log() {
-	if [ $silent = true ]; then
+	if [ $silent -eq 1 ]; then
 		echo -e "[`date +"%Y-%m-%d:%H:%M:%S"`] $@" >> $LOG_FILE
 	else
 		echo "$pink[`date +"%Y/%m/%d:%H:%M:%S"`] $colorReset$@"
