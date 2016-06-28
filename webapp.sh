@@ -107,6 +107,10 @@ checkBrewDependencies() {
 	done
 }
 
+# Installing homebrew dependencies
+# --------------------
+# Dependencies for running the webapp are installed using homebrew
+# --------------------
 installBrewDependencies() {
 	for pkg in ${install[@]}
 	do
@@ -114,11 +118,22 @@ installBrewDependencies() {
 	done
 }
 
+# Log Messages
+# --------------------
+# Logs messags to standard output. Three types of messages
+# can be logged:
+#	e: error messages
+#	m: general message
+# 	l: activity log messages
+#	n: unformatted, normal messages (not logged to log file)
+# Each type is displayed differently. If the --silent flag
+# and a log file directory is specied by --logfile /directory,
+# then any log message will be piped to the log file.
+# --------------------
 log() {
 	TAG=""
 	TIMESTAMP="$(date +"%Y-%m-%d:%H:%M:%S")"
 	cleanPrint=false
-	# e:error, m:message, l:log
 	local OPTIND;
 	while getopts "e:m:l:n:" option
 	do
@@ -138,13 +153,20 @@ log() {
 	done
 }
 
+# Checking Required Arguments
+# --------------------
+# Required arguments are checked. If they are not passed, the program exits gracefully.
+# --------------------
 checkReqArgs() {
 	if [ $nvar -ne 1 ]; then
 		log -e "Project name required"
 		exit
 	fi
 }
-
+# Making App Directories
+# --------------------
+# Makes the directories for app. The root folder is the project name specified by the user.
+# --------------------
 makeDirectories() {
 	root="$(pwd)/$projectName"
 	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
