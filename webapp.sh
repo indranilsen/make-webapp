@@ -53,7 +53,8 @@ install=()
 
 if [ $saveLog -eq 0 ]; then LOG_FILE=$(pwd)"/msg.log"; fi
 
-blue=$(tput setaf 3)
+blue=$(tput setaf 4)
+cyan=$(tput setaf 6)
 red=$(tput setaf 1)
 pink=$(tput setaf 5)
 yellow=$(tput setaf 3)
@@ -88,11 +89,24 @@ installBrewDependencies() {
 }
 
 log() {
-	if [ $silent -eq 1 ]; then
-		echo -e "[`date +"%Y-%m-%d:%H:%M:%S"`] $@" >> $LOG_FILE
-	else
-		echo "$pink[`date +"%Y/%m/%d:%H:%M:%S"`] $colorReset$@"
-	fi
+	TAG=""
+	TIMESTAMP="$(date +"%Y-%m-%d:%H:%M:%S")"
+	# e:error, m:message, l:log
+	while getopts "e:m:l:" option
+	do
+		case "${option}" in
+			m) TAG="$yellow[MSG] ";;	
+			e) TAG="$red[ERR] ";;
+			l) TAG="$cyan[LOG] ";;
+			*) echo 'Incorrect log usage. Flag required.'; exit;;
+		esac
+
+		if [ $silent -eq 1 ]; then
+				echo -e "${TAG:5}[$TIMESTAMP]:\n$OPTARG\n" >> $LOG_FILE
+			else
+				echo "$TAG$colorReset$OPTARG"
+		fi
+	done
 }
 
 # ========================================
@@ -101,4 +115,4 @@ log() {
 #checkBrewDependencies
 #installBrewDependencies
 
-log "THIS IS A LOG MESSAGE"
+log -m "THIS IS A LOG MESSAGE"
