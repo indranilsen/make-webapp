@@ -19,7 +19,7 @@ silent=0
 saveLog=0
 nvar=0
 lvar=0
-args=()
+passedArgs=()
 
 while [ ! $# -eq 0 ]
 do
@@ -36,33 +36,33 @@ do
 			-s, --silent      Do not print log messages to standard output\n"
 			exit
 			;;
+		--version | -v)
+			echo "$version"
+			exit
+			;;
 		--name | -n)
+			passedArgs+=("n")
 			shift
 			projectName="${1}"
 			if [ -z "$projectName" ]; then
 				echo "Specify log file path."
 				exit
-			else
-				nvar=1
 			fi
 			;;
-		--silent | -s)
-			silent=1
-			;;
-		--version | -v)
-			echo "$version"
-			exit
-			;;
 		--logfile | -l)
+			passedArgs+=("l")
 			shift
 			LOG_FILE="${1}"
 			if [ -z "$LOG_FILE" ]; then
 				echo "Specify log file path."
 				exit
 			else
-				lvar=1
+				saveLog=1	
 			fi
-			saveLog=1
+			;;
+		--silent | -s)
+			passedArgs+=("s")
+			silent=1
 			;;
 	esac
 	shift
@@ -158,9 +158,24 @@ log() {
 # Required arguments are checked. If they are not passed, the program exits gracefully.
 # --------------------
 checkReqArgs() {
-	if [ $nvar -ne 1 ]; then
-		log -e "Project name required"
-		exit
+	required=('n:Project name required.' 's:Silent output indicated.')
+	valid=0
+	for ((i = 0; i < ${#required[@]}; i++))
+	do
+		flag="${required[$i]:0:1}"
+		msg="${required[$i]:2}"
+
+		for ((j = 0; j < ${#passedArgs[@]}; j++))
+		do
+			if [ $flag == ${passedArgs[$j]} ]; then
+				((valid++))
+				break
+			fi
+		done
+	done
+
+	if [ $valid -eq ${#required[@]} ]; then
+		log -m "All required args are specified"
 	fi
 }
 # Making App Directories
@@ -177,6 +192,6 @@ makeDirectories() {
 # ========================================
 #checkBrewDependencies
 #installBrewDependencies
-
+echo ${passedArgs[@]}
 checkReqArgs
 makeDirectories
