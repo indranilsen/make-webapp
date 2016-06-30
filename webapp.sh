@@ -54,11 +54,14 @@ do
 			shift
 			LOG_FILE="${1}"
 			if [ -z "$LOG_FILE" ]; then
-				echo "Specify log file path."
+				echo "Specify path to log file."
 				exit
-			else
-				saveLog=1	
 			fi
+			if [ ! -d "$LOG_FILE" ]; then
+				echo "Invalid path."
+				exit
+			fi
+			saveLog=1
 			;;
 		--silent | -s)
 			passedArgs+=("s")
@@ -192,6 +195,6 @@ makeDirectories() {
 # ========================================
 #checkBrewDependencies
 #installBrewDependencies
-echo ${passedArgs[@]}
+# echo ${passedArgs[@]}
 checkReqArgs
 makeDirectories
