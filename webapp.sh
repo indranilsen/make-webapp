@@ -77,6 +77,8 @@ done
 scriptName="${BASH_SOURCE[0]}"
 scriptPath="$(cd "$(dirname "scriptName" )" && pwd)"
 
+root="$(pwd)/$projectName"
+
 homebrewDependencies=("neil")
 install=()
 
@@ -188,8 +190,70 @@ checkReqArgs() {
 # Makes the directories for app. The root folder is the project name specified by the user.
 # --------------------
 makeDirectories() {
-	root="$(pwd)/$projectName"
 	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
+}
+
+addFiles() {
+	touch $root/.gitignore
+	touch $root/README.md
+	touch $root/web/index.html
+	touch $root/web/css/styles-main.css
+	touch $root/web/js/app.js
+
+	cat <<- EOF > $root/.gitignore
+			
+			###################
+			#  MAC OS files
+			###################
+			.DS_Store
+			.AppleDouble
+			.LSOverride
+
+			# Icon must end with two \r
+			Icon
+
+
+			# Thumbnails
+			._*
+
+			# Files that might appear in the root of a volume
+			.DocumentRevisions-V100
+			.fseventsd
+			.Spotlight-V100
+			.TemporaryItems
+			.Trashes
+			.VolumeIcon.icns
+
+			# Directories potentially created on remote AFP share
+			.AppleDB
+			.AppleDesktop
+			Network Trash Folder
+			Temporary Items
+			.apdisk
+
+			####################
+			# windows OS files
+			####################
+			# Windows image file caches
+			Thumbs.db
+			ehthumbs.db
+
+			# Folder config file
+			Desktop.ini
+
+			# Recycle Bin used on file shares
+			$RECYCLE.BIN/
+
+			# Windows Installer files
+			*.cab
+			*.msi
+			*.msm
+			*.msp
+
+			# Windows shortcuts
+			*.lnk
+		EOF
+
 }
 
 # ========================================
@@ -199,3 +263,4 @@ makeDirectories() {
 #installBrewDependencies
 checkReqArgs
 makeDirectories
+addFiles
