@@ -148,10 +148,12 @@ log() {
 			*) echo 'Incorrect log usage. Flag required.'; exit;;
 		esac
 
+		shift
+
 		if [ $silent -eq 1 ] && [ cleanPrint = false ] && [ $lvar -eq 1 ]; then
-				echo -e "${TAG:5}[$TIMESTAMP]:\n$OPTARG\n" >> $LOG_FILE
+				echo -e "${TAG:5}[$TIMESTAMP]:\n$@\n" >> $LOG_FILE
 		else
-			echo "$TAG$colorReset$OPTARG"
+			echo "$TAG$colorReset$@"
 		fi
 	done
 }
@@ -195,6 +197,5 @@ makeDirectories() {
 # ========================================
 #checkBrewDependencies
 #installBrewDependencies
-# echo ${passedArgs[@]}
 checkReqArgs
 makeDirectories
