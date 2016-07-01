@@ -193,13 +193,7 @@ makeDirectories() {
 	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
 }
 
-addFiles() {
-	touch $root/.gitignore
-	touch $root/README.md
-	touch $root/web/index.html
-	touch $root/web/css/styles-main.css
-	touch $root/web/js/app.js
-
+addGitIgnoreFile() {
 	cat <<- EOF > $root/.gitignore
 			
 			###################
@@ -253,6 +247,16 @@ addFiles() {
 			# Windows shortcuts
 			*.lnk
 		EOF
+}
+
+addFiles() {
+	touch $root/.gitignore
+	touch $root/README.md
+	touch $root/web/index.html
+	touch $root/web/css/styles-main.css
+	touch $root/web/js/app.js
+
+	addGitIgnoreFile > $root/.gitignore
 
 }
 
