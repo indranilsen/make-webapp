@@ -287,6 +287,11 @@ addGulpFile() {
 	done
 }
 
+addGulConfigFile() {
+	echo -e "var config = {\n\n}\n\nmodule.exports = config;"
+
+}
+
 # Making Files
 # --------------------
 # Adding different files to the project and concatenating 
@@ -314,6 +319,7 @@ gulpSetup() {
 	touch $root/web/config.js
 
 	addGulpFile > $root/web/gulpfile.js
+	addGulConfigFile > $root/web/config.js
 
 	cd $root/web
 	npm init
@@ -326,6 +332,7 @@ gulpSetup() {
 # ========================================
 #checkBrewDependencies
 #installBrewDependencies
+
 checkReqArgs
 makeDirectories
 addFiles
