@@ -82,6 +82,9 @@ root="$(pwd)/$projectName"
 homebrewDependencies=("neil")
 install=()
 
+nodeDevDependencies=("gulp" "gulp-inject" "gulp-concat")
+nodeProdDependencies=("fs")
+
 if [ $saveLog -eq 0 ]; then LOG_FILE=$(pwd)"/msg.log"; fi
 
 blue=$(tput setaf 4)
@@ -94,7 +97,7 @@ colorReset=$(tput sgr0)
 #	FUNCTIONS
 # ========================================
 
-# Checking for homebrew dependencies
+# Checking for Homebrew Dependencies
 # --------------------
 # Dependencies for running the webapp are listed in the
 # arrays. If not found, the dependices are installed.
@@ -112,7 +115,7 @@ checkBrewDependencies() {
 	done
 }
 
-# Installing homebrew dependencies
+# Installing Homebrew Dependencies
 # --------------------
 # Dependencies for running the webapp are installed using homebrew
 # --------------------
@@ -120,6 +123,22 @@ installBrewDependencies() {
 	for pkg in ${install[@]}
 	do
 		"$(brew install "$pkg")"
+	done
+}
+
+# Installing Node Dependencies
+# --------------------
+# Dev and prod dependencies are installed using npm
+# --------------------
+installNpmDependencies() {
+	for devPkg in ${nodeDevDependencies[@]}
+	do
+		"$(npm install --save-dev "$devPkg")"
+	done
+
+	for prodPkg in ${nodeProdDependencies[@]}
+	do
+		"$(npm install --save "$prodPkg")"
 	done
 }
 
@@ -165,7 +184,7 @@ log() {
 # Required arguments are checked. If they are not passed, the program exits gracefully.
 # --------------------
 checkReqArgs() {
-	required=('n:Project name required.' 's:Silent output indicated.')
+	required=('n:Project name required.')
 	valid=0
 	for ((i = 0; i < ${#required[@]}; i++))
 	do
@@ -193,7 +212,11 @@ makeDirectories() {
 	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
 }
 
-addGitIgnoreFile() {
+# Adding Content to Files
+# --------------------
+# Adding content to gitignore file
+# --------------------
+addGitIgnore() {
 	cat <<- EOF > $root/.gitignore
 			
 			###################
@@ -249,6 +272,26 @@ addGitIgnoreFile() {
 		EOF
 }
 
+# --------------------
+# Adding content to gulpfile.js
+# --------------------
+addGulpFile() {
+	echo -e "var config = require(\'./config.js\');"
+	for devPkg in ${nodeDevDependencies[@]}
+	do
+		var="var $devPkg = require('$devPkg');"
+		if [[ $var == *['-']* ]]; then
+			var='var '${var:9}
+		fi
+		echo $var
+	done
+}
+
+# Making Files
+# --------------------
+# Adding different files to the project and concatenating 
+# content to them.
+# --------------------
 addFiles() {
 	touch $root/.gitignore
 	touch $root/README.md
@@ -256,8 +299,22 @@ addFiles() {
 	touch $root/web/css/styles-main.css
 	touch $root/web/js/app.js
 
-	addGitIgnoreFile > $root/.gitignore
+	touch $root/web/gulpfile.js
+	touch $root/web/config.js
 
+	addGitIgnore > $root/.gitignore
+	addGulpFile > $root/web/gulpfile.js
+}
+
+# Adding Gulp Task Runner to Project
+# --------------------
+# Adding package.json file and installing dependencies.
+# --------------------
+gulpSetup() {
+	cd $root/web
+	npm init
+	installNpmDependencies
+	cd ..
 }
 
 # ========================================
@@ -268,3 +325,4 @@ addFiles() {
 checkReqArgs
 makeDirectories
 addFiles
+gulpSetup
