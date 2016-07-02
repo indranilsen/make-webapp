@@ -299,18 +299,22 @@ addFiles() {
 	touch $root/web/css/styles-main.css
 	touch $root/web/js/app.js
 
-	touch $root/web/gulpfile.js
-	touch $root/web/config.js
-
 	addGitIgnore > $root/.gitignore
-	addGulpFile > $root/web/gulpfile.js
 }
 
 # Adding Gulp Task Runner to Project
 # --------------------
-# Adding package.json file and installing dependencies.
+# Adding gulpfile.js, congig.js package.json, 
+# and installing dependencies. In addition, gulpfile.js 
+# is populated with variables referencing the packages 
+# that are installed as dev dependencies.
 # --------------------
 gulpSetup() {
+	touch $root/web/gulpfile.js
+	touch $root/web/config.js
+
+	addGulpFile > $root/web/gulpfile.js
+
 	cd $root/web
 	npm init
 	installNpmDependencies
