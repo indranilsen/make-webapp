@@ -217,7 +217,7 @@ makeDirectories() {
 # Adding content to gitignore file
 # --------------------
 addGitIgnore() {
-	cat <<- EOF > $root/.gitignore
+	cat <<- EOF
 			
 			###################
 			#  MAC OS files
@@ -273,6 +273,52 @@ addGitIgnore() {
 }
 
 # --------------------
+# Adding content to index.html
+# --------------------
+addIndexHTML() {
+	read -r -d '' content <<- "EOF"
+		<!DOCTYPE html>\n
+		<html>\n
+		<head>\n
+			\t<meta charset="utf-8">\n
+			\t<title>[Insert Title]</title>\n
+			\t<link rel="stylesheet" href="css/styles-main.css" type="text/css" media="all">\n
+		</head>\n\n
+
+		<body>\n\n\n
+
+		</body>\n\n
+
+		<html>
+		EOF
+
+	echo -e $content
+}
+
+# --------------------
+# Adding content to styles-main.js
+# --------------------
+addStylesMainCSS() {
+	cat <<- EOF
+		/* General page styles */
+		@import url('page-overall/style.css');
+		
+		/* 3rd party */
+		@import url('third-party/[INSERT FILE NAME].css');
+
+		/* <header> styles */
+		@import url('header/style.css');
+
+		/* <main> and its children styles */
+		@import url('main-content/style.css');
+
+		/* <footer> styles */
+		@import url('footer/style.css');
+
+		EOF
+}
+
+# --------------------
 # Adding content to gulpfile.js
 # --------------------
 addGulpFile() {
@@ -287,9 +333,11 @@ addGulpFile() {
 	done
 }
 
+# --------------------
+# Adding content to config.js
+# --------------------
 addGulConfigFile() {
 	echo -e "var config = {\n\n}\n\nmodule.exports = config;"
-
 }
 
 # Making Files
@@ -300,11 +348,20 @@ addGulConfigFile() {
 addFiles() {
 	touch $root/.gitignore
 	touch $root/README.md
+	
 	touch $root/web/index.html
+	
 	touch $root/web/css/styles-main.css
+	touch $root/web/css/header/style.css
+	touch $root/web/css/main-content/style.css
+	touch $root/web/css/footer/style.css
+	touch $root/web/css/page-overall/style.css
+	
 	touch $root/web/js/app.js
 
 	addGitIgnore > $root/.gitignore
+	addIndexHTML > $root/web/index.html
+	addStylesMainCSS > $root/web/css/styles-main.css
 }
 
 # Adding Gulp Task Runner to Project
