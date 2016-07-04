@@ -82,8 +82,8 @@ root="$(pwd)/$projectName"
 homebrewDependencies=("neil")
 install=()
 
-nodeDevDependencies=("gulp" "gulp-inject" "gulp-concat")
-nodeProdDependencies=("fs")
+nodeDevDependencies=("gulp" "gulp-inject" "gulp-concat" "gulp-uglify" "gulp-clean-css" "gulp-autoprefixer" "gulp-notify" "gulp-jshint")
+nodeProdDependencies=()
 
 if [ $saveLog -eq 0 ]; then LOG_FILE=$(pwd)"/msg.log"; fi
 
@@ -322,7 +322,7 @@ addStylesMainCSS() {
 # Adding content to gulpfile.js
 # --------------------
 addGulpFile() {
-	echo -e "var config = require(\'./config.js\');"
+	printf "var config = require(\'./config.js\');\n"
 	for devPkg in ${nodeDevDependencies[@]}
 	do
 		var="var $devPkg = require('$devPkg');"
