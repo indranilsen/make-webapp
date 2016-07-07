@@ -201,9 +201,17 @@ checkReqArgs() {
 				found=false
 			fi
 		done
+		
 		if [ $found == false ]; then
-			echo $msg
+			case "$flag" in
+				n)  read -p "Project name? " projectName
+					while [[ -z "$projectName" ]]; do
+						read -p "Answer required: " projectName
+					done
+					;;
+			esac
 		fi
+		
 	done
 
 	if [ $valid -eq ${#required[@]} ]; then
