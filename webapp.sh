@@ -421,8 +421,8 @@ gulpSetup() {
 	addGulConfigFile > $root/web/config.js
 
 	cd $root/web
-	# npm init
-	# installNpmDependencies
+	npm init
+	installNpmDependencies
 	cd ..
 }
 
@@ -435,8 +435,14 @@ installBrewDependencies
 checkReqArgs
 promptAdditionalPackageInstall
 
-makeDirectories
-addFiles
-gulpSetup
+main() {
+	makeDirectories
+	addFiles
+	gulpSetup
+}
 
-log -m "DONE"
+# ========================================
+#	RUN MAIN
+# ========================================
+
+main
