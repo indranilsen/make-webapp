@@ -94,12 +94,24 @@ colorReset=$(tput sgr0)
 #	FUNCTIONS
 # ========================================
 
+# Checking Homebrew Package Installation
+# --------------------
+# Checking is homebrew is installed. In not found, 
+# the script will install homebrew.
+# --------------------
+findBrew() {
+	if [ $(which brew 2>/dev/null) ]; then
+		log -m Homebrew installed
+	else
+		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	fi
+}
+
 # Checking for Homebrew Dependencies
 # --------------------
 # Dependencies for running the webapp are listed in the
 # arrays. If not found, the dependices are installed.
 # --------------------
-
 checkBrewDependencies() {
 	for pkg in ${homebrewDependencies[@]}
 	do
@@ -429,6 +441,9 @@ gulpSetup() {
 # ========================================
 #	SETUP
 # ========================================
+
+findBrew
+
 checkBrewDependencies
 installBrewDependencies
 
