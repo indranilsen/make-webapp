@@ -17,8 +17,6 @@ version="1.0.0"
 # Defaults
 silent=0
 saveLog=0
-nvar=0
-lvar=0
 passedArgs=()
 
 while [ ! $# -eq 0 ]
@@ -61,6 +59,7 @@ do
 				echo "Invalid path."
 				exit
 			fi
+			LOG_FILE="$LOG_FILE/runlog.log"
 			saveLog=1
 			;;
 		--silent | -s)
@@ -79,13 +78,11 @@ scriptPath="$(cd "$(dirname "scriptName" )" && pwd)"
 
 root="$(pwd)/$projectName"
 
-homebrewDependencies=("neil")
+homebrewDependencies=("node")
 install=()
 
 nodeDevDependencies=("gulp" "gulp-inject" "gulp-concat" "gulp-uglify" "gulp-clean-css" "gulp-autoprefixer" "gulp-notify" "gulp-jshint")
 nodeProdDependencies=()
-
-if [ $saveLog -eq 0 ]; then LOG_FILE=$(pwd)"/msg.log"; fi
 
 blue=$(tput setaf 4)
 cyan=$(tput setaf 6)
@@ -150,9 +147,11 @@ installNpmDependencies() {
 #	m: general message
 # 	l: activity log messages
 #	n: unformatted, normal messages (not logged to log file)
-# Each type is displayed differently. If the --silent flag
-# and a log file directory is specied by --logfile /directory,
-# then any log message will be piped to the log file.
+# Each type is displayed differently. If a log file directory is 
+# specied by --logfile '~/directory', then any log message will 
+# be piped to the log file.
+# Logged messages are not output to standard output if the --silent
+# flag is specified.
 # --------------------
 log() {
 	TAG=""
@@ -171,9 +170,11 @@ log() {
 
 		shift
 
-		if [ $silent -eq 1 ] && [ cleanPrint = false ] && [ $lvar -eq 1 ]; then
+		# Only print to log file, if a log file is specified in program 
+		# argument AND the messaged to be logged has either m, e or l flag
+		if [ $saveLog -eq 1 ] && [ $cleanPrint = false ]; then
 				echo -e "${TAG:5}[$TIMESTAMP]:\n$@\n" >> $LOG_FILE
-		else
+		elif [ $silent -eq 0 ]; then
 			echo "$TAG$colorReset$@"
 		fi
 	done
@@ -201,17 +202,18 @@ checkReqArgs() {
 				found=false
 			fi
 		done
-		
+
 		if [ $found == false ]; then
 			case "$flag" in
 				n)  read -p "Project name? " projectName
 					while [[ -z "$projectName" ]]; do
 						read -p "Answer required: " projectName
 					done
+					root="$(pwd)/$projectName"
 					;;
 			esac
 		fi
-		
+
 	done
 
 	if [ $valid -eq ${#required[@]} ]; then
@@ -419,19 +421,22 @@ gulpSetup() {
 	addGulConfigFile > $root/web/config.js
 
 	cd $root/web
-	npm init
-	installNpmDependencies
+	# npm init
+	# installNpmDependencies
 	cd ..
 }
 
 # ========================================
 #	SETUP
 # ========================================
-#checkBrewDependencies
-#installBrewDependencies
+checkBrewDependencies
+installBrewDependencies
 
 checkReqArgs
-# makeDirectories
-# promptAdditionalPackageInstall
-# addFiles
-# gulpSetup
+promptAdditionalPackageInstall
+
+makeDirectories
+addFiles
+gulpSetup
+
+log -m "DONE"
