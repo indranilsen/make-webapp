@@ -353,7 +353,7 @@ addGulpFile() {
 	do
 		var="var $devPkg = require('$devPkg');"
 		if [[ $var == *['-']* ]]; then
-			var='var '${var:9}
+			var="var ${devPkg#*-} = require('$devPkg');"
 		fi
 		echo $var
 	done
