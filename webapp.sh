@@ -45,7 +45,7 @@ do
 			shift
 			projectName="${1}"
 			if [ -z "$projectName" ]; then
-				echo "Specify log file path."
+				echo "Specify project name."
 				exit
 			fi
 			;;
@@ -204,6 +204,32 @@ checkReqArgs() {
 		log -m "All required args are specified"
 	fi
 }
+
+# Prompt User for Packages
+# --------------------
+# Aks the user to install additional node packages
+# --------------------
+promptAdditionalPackageInstall() {
+	read -p "Install additional packages? (press return to continue) " val
+
+	if [ ! -z "$val" ]; then
+		if [[ $val == *[',']* ]]; then
+			IFS=',' read -r -a packages <<< "$val"
+		elif [[ $val == *[', ']* ]]; then
+			IFS=', ' read -r -a packages <<< "$val"
+		elif [[ $val == *[' ']* ]]; then
+			IFS=' ' read -r -a packages <<< "$val"
+		fi
+	fi
+
+	if [ ${#packages[@]} -gt 0 ]; then
+		for pkg in ${packages[@]}
+		do
+			nodeDevDependencies+=("$pkg")
+		done
+	fi
+}
+
 # Making App Directories
 # --------------------
 # Makes the directories for app. The root folder is the project name specified by the user.
@@ -392,5 +418,6 @@ gulpSetup() {
 
 checkReqArgs
 makeDirectories
+promptAdditionalPackageInstall
 addFiles
 gulpSetup
