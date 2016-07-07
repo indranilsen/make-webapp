@@ -238,6 +238,15 @@ checkReqArgs() {
 # Aks the user to install additional node packages
 # --------------------
 promptAdditionalPackageInstall() {
+
+	log -n "Default packages:"
+	for ((i = 0; i < ${#nodeDevDependencies[@]}; i++))
+	do
+		printf "%d: %s\n" $((i+1)) ${nodeDevDependencies[$i]}
+	done
+
+	log -n ""
+
 	read -p "Install additional dev packages? (press return to continue) " val
 
 	if [ ! -z "$val" ]; then
