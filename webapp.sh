@@ -101,9 +101,11 @@ colorReset=$(tput sgr0)
 # --------------------
 findBrew() {
 	if [ $(which brew 2>/dev/null) ]; then
-		log -m Homebrew installed
+		log -m Homebrew available
 	else
+		log -e Homebrew not found. Now installing ...
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		log -m Homebrew installed
 	fi
 }
 
@@ -113,15 +115,17 @@ findBrew() {
 # arrays. If not found, the dependices are installed.
 # --------------------
 checkBrewDependencies() {
+	log -m Checking for brew dependices ...
 	for pkg in ${homebrewDependencies[@]}
 	do
 		if [ $(which $pkg 2>/dev/null) ]; then
 			continue
 		else
-			echo $pkg not installed
+			log -e "$pkg not installed"
 			install+=("$pkg")
 		fi
 	done
+
 }
 
 # Installing Homebrew Dependencies
@@ -133,6 +137,12 @@ installBrewDependencies() {
 	do
 		"$(brew install "$pkg")"
 	done
+
+	if [ ${#install[@]} -gt 0 ]; then
+		log -m Brew dependencies installed
+	else
+		log -m Brew dependencies alreadly installed
+	fi
 }
 
 # Installing Node Dependencies
@@ -140,6 +150,7 @@ installBrewDependencies() {
 # Dev and prod dependencies are installed using npm
 # --------------------
 installNpmDependencies() {
+	log -m Installing node packages ...
 	for devPkg in ${nodeDevDependencies[@]}
 	do
 		"$(npm install --save-dev "$devPkg")"
@@ -149,6 +160,7 @@ installNpmDependencies() {
 	do
 		"$(npm install --save "$prodPkg")"
 	done
+	log -m Node packages installed
 }
 
 # Log Messages
@@ -281,6 +293,7 @@ promptAdditionalPackageInstall() {
 # Makes the directories for app. The root folder is the project name specified by the user.
 # --------------------
 makeDirectories() {
+	log -m Making directories...
 	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
 }
 
@@ -418,6 +431,7 @@ addGulConfigFile() {
 # content to them.
 # --------------------
 addFiles() {
+	log -m "Adding content to files ..."
 	touch $root/.gitignore
 	touch $root/README.md
 	
@@ -444,6 +458,7 @@ addFiles() {
 # that are installed as dev dependencies.
 # --------------------
 gulpSetup() {
+	log -m "Setting up Gulp Task Runner for project ..."
 	touch $root/web/gulpfile.js
 	touch $root/web/config.js
 
@@ -454,12 +469,12 @@ gulpSetup() {
 	npm init
 	installNpmDependencies
 	cd ..
+	log -m "Gulp added"
 }
 
 # ========================================
 #	SETUP
 # ========================================
-
 findBrew
 
 checkBrewDependencies
@@ -472,6 +487,8 @@ main() {
 	makeDirectories
 	addFiles
 	gulpSetup
+
+	log -m 'Project setup complete!'
 }
 
 # ========================================
