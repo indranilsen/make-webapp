@@ -190,14 +190,20 @@ checkReqArgs() {
 	do
 		flag="${required[$i]:0:1}"
 		msg="${required[$i]:2}"
-
+		found=false
 		for ((j = 0; j < ${#passedArgs[@]}; j++))
 		do
 			if [ $flag == ${passedArgs[$j]} ]; then
 				((valid++))
+				found=true
 				break
+			else
+				found=false
 			fi
 		done
+		if [ $found == false ]; then
+			echo $msg
+		fi
 	done
 
 	if [ $valid -eq ${#required[@]} ]; then
@@ -417,7 +423,7 @@ gulpSetup() {
 #installBrewDependencies
 
 checkReqArgs
-makeDirectories
-promptAdditionalPackageInstall
-addFiles
-gulpSetup
+# makeDirectories
+# promptAdditionalPackageInstall
+# addFiles
+# gulpSetup
