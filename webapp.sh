@@ -210,7 +210,7 @@ checkReqArgs() {
 # Aks the user to install additional node packages
 # --------------------
 promptAdditionalPackageInstall() {
-	read -p "Install additional packages? (press return to continue) " val
+	read -p "Install additional dev packages? (press return to continue) " val
 
 	if [ ! -z "$val" ]; then
 		if [[ $val == *[',']* ]]; then
