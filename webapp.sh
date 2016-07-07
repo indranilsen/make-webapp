@@ -81,7 +81,7 @@ root="$(pwd)/$projectName"
 homebrewDependencies=("node")
 install=()
 
-nodeDevDependencies=("gulp" "gulp-inject" "gulp-concat" "gulp-uglify" "gulp-clean-css" "gulp-autoprefixer" "gulp-notify" "gulp-jshint")
+nodeDevDependencies=("gulp" "gulp-autoprefixer")
 nodeProdDependencies=()
 
 blue=$(tput setaf 4)
@@ -253,7 +253,16 @@ promptAdditionalPackageInstall() {
 	if [ ${#packages[@]} -gt 0 ]; then
 		for pkg in ${packages[@]}
 		do
-			nodeDevDependencies+=("$pkg")
+			foundNodePkg=false
+			for check in ${nodeDevDependencies[@]}
+			do
+				if [ $check == $pkg ]; then
+					foundNodePkg=true
+				fi
+			done
+			if [ $foundNodePkg == false ]; then
+				nodeDevDependencies+=("$pkg")
+			fi
 		done
 	fi
 }
