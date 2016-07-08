@@ -19,55 +19,58 @@ silent=0
 saveLog=0
 passedArgs=()
 
-while [ ! $# -eq 0 ]
-do
-	case "$1" in
-		--help | -h)
-			echo -n -e "webapp [OPTION]... [FILE]...
+while [ ! $# -eq 0 ]; do
+case "$1" in
+	--help | -h)
+		echo -n -e "\nwebapps [OPTION]... [FILE]...
 
-			This script creates a boilerplate for an AngularJS web app.	
+	This script creates a boilerplate project for an AngularJS web app.	
 
-			Options:
-			-h, --help        Print usage information
-			-n, --name        Name of project
-			-l, --logfile     Specify directory for log file as parameter
-			-s, --silent      Do not print log messages to standard output\n"
+	Options:
+	-h, --help                       Print usage information
+	-n, --name    [project_name]     Name of project
+	-l, --logfile [path]             Specify path for log file as parameter
+	-s, --silent                     Do not print log messages to standard output
+	-v, --version                    Prints script version to standard output
+
+	If the -l, --logfile [path] is specified, the script creates a logfile
+	of the script processes.\n\n"
+		exit
+		;;
+	--version | -v)
+		echo "$version"
+		exit
+		;;
+	--name | -n)
+		passedArgs+=("n")
+		shift
+		projectName="${1}"
+		if [ -z "$projectName" ]; then
+			echo "Specify project name."
 			exit
-			;;
-		--version | -v)
-			echo "$version"
+		fi
+		;;
+	--logfile | -l)
+		passedArgs+=("l")
+		shift
+		LOG_FILE="${1}"
+		if [ -z "$LOG_FILE" ]; then
+			echo "Specify path to log file."
 			exit
-			;;
-		--name | -n)
-			passedArgs+=("n")
-			shift
-			projectName="${1}"
-			if [ -z "$projectName" ]; then
-				echo "Specify project name."
-				exit
-			fi
-			;;
-		--logfile | -l)
-			passedArgs+=("l")
-			shift
-			LOG_FILE="${1}"
-			if [ -z "$LOG_FILE" ]; then
-				echo "Specify path to log file."
-				exit
-			fi
-			if [ ! -d "$LOG_FILE" ]; then
-				echo "Invalid path."
-				exit
-			fi
-			LOG_FILE="$LOG_FILE/runlog.log"
-			saveLog=1
-			;;
-		--silent | -s)
-			passedArgs+=("s")
-			silent=1
-			;;
-	esac
-	shift
+		fi
+		if [ ! -d "$LOG_FILE" ]; then
+			echo "Invalid path."
+			exit
+		fi
+		LOG_FILE="$LOG_FILE/runlog.log"
+		saveLog=1
+		;;
+	--silent | -s)
+		passedArgs+=("s")
+		silent=1
+		;;
+esac
+shift
 done
 
 # ========================================
