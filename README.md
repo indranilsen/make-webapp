@@ -1,4 +1,4 @@
-## Webapp
+# make-webapp
 This script creates a boilerplate project for an AngularJS web app.
 
 ## Installation
