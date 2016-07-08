@@ -7,8 +7,8 @@ This script creates a boilerplate project for an AngularJS web app.
 
 Open terminal and type the following:
 ```
-brew tap indranilsen/templater
-brew install webapp
+brew tap indranilsen/make-webapp
+brew install make-webapp
 ```
 
 Note that this adds the script to the user's ```PATH```
