@@ -18,17 +18,17 @@ Note that this adds the script to the user's ```PATH```
  
 Before executing the script, change its permission:
  ```
- chmod +x webapp
+ chmod +x make-webapp
  ```
  
 To execute the script from any directory, add it to your ```PATH```:
 ```
-cp -i /DIRECTORY_OF_SCRIPT/webapp /usr/local/bin
+cp -i /DIRECTORY_OF_SCRIPT/make-webapp /usr/local/bin
 ```
 
 ## Usage
 
-Display usage information: ```webapp --help ``` or ```webapp -h```
+Display usage information: ```make-webapp --help ``` or ```make-webapp -h```
 
 Flags and arguments:
 
@@ -40,8 +40,8 @@ Flags and arguments:
 -v, --version                    Prints script version to standard output
 ```
 **NOTE:**  
-1. If you haven't added the script to your ```PATH``` you must ```cd``` to the script directory and execute by typing ```./webapp```  
-2. A log file is created only when the ```--logfile [path]``` or ```-l [path]``` arguments are specifed. _[path]_ should be a valid directory. Do not specify logfile name. **Example:** ```webapp -l /Users/me/desktop```
+1. If you haven't added the script to your ```PATH``` you must ```cd``` to the script directory and execute by typing ```./make-webapp```  
+2. A log file is created only when the ```--logfile [path]``` or ```-l [path]``` arguments are specifed. _[path]_ should be a valid directory. Do not specify logfile name. **Example:** ```make-webapp -l /Users/me/desktop```
 
 ## Features
 
