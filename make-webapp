@@ -22,7 +22,7 @@ passedArgs=()
 while [ ! $# -eq 0 ]; do
 case "$1" in
 	--help | -h)
-		echo -n -e "\nwebapps [OPTION]... [FILE]...
+		echo -n -e "\nmake-webapp [OPTION]... [FILE]...
 
 	This script creates a boilerplate project for an AngularJS web app.	
 
@@ -379,7 +379,7 @@ addIndexHTML() {
 
 		<body>
 		</body>
-		
+
 		<html>
 		EOF
 
@@ -413,7 +413,7 @@ addStylesMainCSS() {
 # Adding content to gulpfile.js
 # --------------------
 addGulpFile() {
-	printf "var config = require(\'./config.js\');\n"
+	printf "var config = require(\'./gulp_config/config.js\');\n"
 	for devPkg in ${nodeDevDependencies[@]}
 	do
 		var="var $devPkg = require('$devPkg');"
@@ -465,11 +465,16 @@ addFiles() {
 # --------------------
 gulpSetup() {
 	log -m "Setting up Gulp Task Runner for project ..."
+	
+	cd $root/web
+		mkdir gulp_config
+	cd ..
+
 	touch $root/web/gulpfile.js
-	touch $root/web/config.js
+	touch $root/web/gulp_config/config.js
 
 	addGulpFile > $root/web/gulpfile.js
-	addGulConfigFile > $root/web/config.js
+	addGulConfigFile > $root/web/gulp_config/config.js
 
 	cd $root/web
 	npm init
