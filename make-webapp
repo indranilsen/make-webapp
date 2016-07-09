@@ -366,23 +366,24 @@ addGitIgnore() {
 # Adding content to index.html
 # --------------------
 addIndexHTML() {
+
 	read -r -d '' content <<- "EOF"
-		<!DOCTYPE html>\n
-		<html>\n
-		<head>\n
-			\t<meta charset="utf-8">\n
-			\t<title>[Insert Title]</title>\n
-			\t<link rel="stylesheet" href="css/styles-main.css" type="text/css" media="all">\n
-		</head>\n\n
+		<!DOCTYPE html>
+		<html>
 
-		<body>\n\n\n
+		<head>
+			\t<meta charset="utf-8">
+			\t<title>[Insert Title]</title>
+			\t<link rel="stylesheet" href="css/styles-main.css" type="text/css" media="all">
+		</head>
 
-		</body>\n\n
-
+		<body>
+		</body>
+		
 		<html>
 		EOF
 
-	echo -e $content
+	printf "$content"
 }
 
 # --------------------
