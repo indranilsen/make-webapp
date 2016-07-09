@@ -8,7 +8,7 @@
 # This script creates a boilerplate for an
 # AngularJS web app.
 
-version="1.0.0"
+version="1.0.1"
 
 # ========================================
 #	FLAGS
