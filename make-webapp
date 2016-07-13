@@ -412,6 +412,9 @@ addStylesMainCSS() {
 
 		/* <header> styles */
 		@import url('header/style.css');
+		@import url('main-content/about/style.css');
+		@import url('main-content/contact/style.css');
+		@import url('main-content/home/style.css');
 
 		/* <main> and its children styles */
 		@import url('main-content/style.css');
