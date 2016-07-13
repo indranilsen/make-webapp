@@ -457,6 +457,7 @@ addFiles() {
 	touch $root/web/index.html
 	
 	touch $root/web/css/styles-main.css
+
 	touch $root/web/css/header/style.css
 	touch $root/web/css/main-content/style.css
 	touch $root/web/css/main-content/about/style.css
@@ -466,6 +467,27 @@ addFiles() {
 	touch $root/web/css/page-overall/style.css
 	
 	touch $root/web/js/app.js
+
+	touch $root/web/js/controllers/header/headerController.js
+	touch $root/web/js/controllers/main-content/mainController.js
+	touch $root/web/js/controllers/main-content/aboutController.js
+	touch $root/web/js/controllers/main-content/contactController.js
+	touch $root/web/js/controllers/main-content/homeController.js
+	touch $root/web/js/controllers/footer/footerController.js
+
+	touch $root/web/js/directives/about.js
+	touch $root/web/js/directives/contact.js
+	touch $root/web/js/directives/header.js
+	touch $root/web/js/directives/footer.js
+	touch $root/web/js/directives/main.js
+	touch $root/web/js/directives/home.js
+
+	touch $root/web/partials/header/header.html
+	touch $root/web/partials/footer/footer.html
+	touch $root/web/partials/main-content/about.html
+	touch $root/web/partials/main-content/main.html
+	touch $root/web/partials/main-content/contact.html
+	touch $root/web/partials/main-content/home.html
 
 	addGitIgnore > $root/.gitignore
 	addIndexHTML > $root/web/index.html
