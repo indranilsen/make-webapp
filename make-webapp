@@ -299,7 +299,20 @@ promptAdditionalPackageInstall() {
 # --------------------
 makeDirectories() {
 	log -m Making directories...
-	mkdir -p $root/{server,web/{css/{footer,header,main-content,page-overall,third-party},img/main-content,js/{controllers,directives,providers},partials}}
+	
+	mkdir -p $root/{server,web/{css,img,js,partials}}
+
+	cd $root/web/css
+		mkdir -p {footer,header,main-content/{about,contact,home},page-overall,third-party}
+	cd ../../..
+
+	cd $root/web/js
+		mkdir -p {controllers/{footer,header,main-content},directives,providers}
+	cd ../../..
+
+	cd $root/web/partials
+		mkdir -p {directives,footer,header,main-content}
+	cd ../../..	
 }
 
 # Adding Content to Files
@@ -446,6 +459,9 @@ addFiles() {
 	touch $root/web/css/styles-main.css
 	touch $root/web/css/header/style.css
 	touch $root/web/css/main-content/style.css
+	touch $root/web/css/main-content/about/style.css
+	touch $root/web/css/main-content/contact/style.css
+	touch $root/web/css/main-content/home/style.css
 	touch $root/web/css/footer/style.css
 	touch $root/web/css/page-overall/style.css
 	
@@ -477,8 +493,8 @@ gulpSetup() {
 	addGulConfigFile > $root/web/gulp_config/config.js
 
 	cd $root/web
-	npm init
-	installNpmDependencies
+	# npm init
+	# installNpmDependencies
 	cd ..
 	log -m "Gulp added"
 }
@@ -486,13 +502,13 @@ gulpSetup() {
 # ========================================
 #	SETUP
 # ========================================
-findBrew
+# findBrew
 
-checkBrewDependencies
-installBrewDependencies
+# checkBrewDependencies
+# installBrewDependencies
 
-checkReqArgs
-promptAdditionalPackageInstall
+# checkReqArgs
+# promptAdditionalPackageInstall
 
 main() {
 	makeDirectories
