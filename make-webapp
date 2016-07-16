@@ -8,7 +8,7 @@
 # This script creates a boilerplate for an
 # AngularJS web app.
 
-version="1.0.1"
+version="1.1.0"
 
 # ========================================
 #	FLAGS
@@ -17,6 +17,7 @@ version="1.0.1"
 # Defaults
 silent=0
 saveLog=0
+initTemp=0
 passedArgs=()
 
 while [ ! $# -eq 0 ]; do
@@ -29,6 +30,7 @@ case "$1" in
 	Options:
 	-h, --help                       Print usage information
 	-n, --name    [project_name]     Name of project
+	-t, --template					 Initialize project with a template
 	-l, --logfile [path]             Specify path for log file as parameter
 	-s, --silent                     Do not print log messages to standard output
 	-v, --version                    Prints script version to standard output
@@ -49,6 +51,10 @@ case "$1" in
 			echo "Specify project name."
 			exit
 		fi
+		;;
+	--template | -t)
+		passedArgs+=("t")
+		initTemp=1
 		;;
 	--logfile | -l)
 		passedArgs+=("l")
@@ -245,6 +251,22 @@ checkReqArgs() {
 
 	if [ $valid -eq ${#required[@]} ]; then
 		log -m "All required args are specified"
+	fi
+}
+
+# Prompt User to Make Template
+# --------------------
+# Aks the user to initialize the project with a template
+# --------------------
+promptToMakeTemplate() {
+	if [ $initTemp -ne 1 ]; then
+		read -p "Initialize with template?(y/n) " templateResponse
+		if [ ! -z $templateResponse ]; then
+			templateResponse=$(echo "$templateResponse" | awk '{print tolower($0)}')
+			if [ $templateResponse == 'y' ] || [ $templateResponse == 'yes' ]; then
+				initTemp=1
+			fi
+		fi
 	fi
 }
 
@@ -534,6 +556,7 @@ gulpSetup() {
 
 # checkReqArgs
 # promptAdditionalPackageInstall
+promptToMakeTemplate
 
 main() {
 	makeDirectories
