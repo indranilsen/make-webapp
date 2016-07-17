@@ -402,7 +402,46 @@ addGitIgnore() {
 # --------------------
 addIndexHTML() {
 
+	if [ $initTemp -eq 1 ]; then
 	read -r -d '' content <<- "EOF"
+		<!DOCTYPE html>
+		<html>
+
+		<head>
+			\t<meta charset="utf-8">
+			\t<title>[Insert Title]</title>
+			\t<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+			\t<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+			\t<link rel="stylesheet" href="css/styles-main.css" type="text/css" media="all">
+			\t<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+		</head>
+
+		<body ng-app="app">
+			\t<app-header></app-header>
+			\t<app-main></app-main>
+			\t<app-footer></app-footer>
+
+			\t<script src="js/app.js"></script>
+
+			\t<script src="js/controllers/header/headerController.js"></script>
+			\t<script src="js/controllers/main-content/mainController.js"></script>
+			\t<script src="js/controllers/main-content/homeController.js"></script>
+			\t<script src="js/controllers/main-content/aboutController.js"></script>
+			\t<script src="js/controllers/main-content/contactController.js"></script>
+			\t<script src="js/controllers/footer/footerController.js"></script>
+
+			\t<script src="js/directives/header.js"></script>
+			\t<script src="js/directives/main.js"></script>
+			\t<script src="js/directives/home.js"></script>
+			\t<script src="js/directives/about.js"></script>
+			\t<script src="js/directives/contact.js"></script>
+			\t<script src="js/directives/footer.js"></script>
+		</body>
+
+		<html>
+		EOF
+	else
+		read -r -d '' content <<- "EOF"
 		<!DOCTYPE html>
 		<html>
 
@@ -417,6 +456,7 @@ addIndexHTML() {
 
 		<html>
 		EOF
+	fi
 
 	printf "$content"
 }
@@ -430,7 +470,7 @@ addStylesMainCSS() {
 		@import url('page-overall/style.css');
 		
 		/* 3rd party */
-		@import url('third-party/[INSERT FILE NAME].css');
+		/*@import url('third-party/[INSERT FILE NAME].css');*/
 
 		/* <header> styles */
 		@import url('header/style.css');
