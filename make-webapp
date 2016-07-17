@@ -594,6 +594,79 @@ addFiles() {
 	addIndexHTML > $root/web/index.html
 	addStylesMainCSS > $root/web/css/styles-main.css
 	addAppJS > $root/web/js/app.js
+
+	addJS
+}
+
+# Adding JS to Project
+# --------------------
+# Adding JS for directives and controllers to make the app 
+# funcitonal.
+# --------------------
+addJS() {
+	if [ $initTemp -eq 1 ]; then
+
+		read -r -d '' directiveHeader <<- "EOF"
+			angular.module('app')
+			.directive('appHeader', function() {
+				\treturn {
+					\t\ttemplateUrl: 'partials/header/header.html'
+				\t}
+			});
+			EOF
+		printf "$directiveHeader" > $root/web/js/directives/header.js
+
+		read -r -d '' directiveMain <<- "EOF"
+			angular.module('app')
+			.directive('appMain', function() {
+				\treturn {
+					\t\ttemplateUrl: 'partials/main-content/main.html'
+				\t}
+			});
+			EOF
+		printf "$directiveMain" > $root/web/js/directives/main.js
+
+		read -r -d '' directiveFooter <<- "EOF"
+			angular.module('app')
+			.directive('appFooter', function() {
+				\treturn {
+					\t\ttemplateUrl: 'partials/footer/footer.html'
+				\t}
+			});
+			EOF
+		printf "$directiveFooter" > $root/web/js/directives/footer.js
+
+		read -r -d '' directiveMainHome <<- "EOF"
+			angular.module('app')
+			.directive('appMainHome', function() {
+				\treturn {
+					\t\ttemplateUrl: 'partials/main-content/home.html'
+				\t}
+			});
+			EOF
+		printf "$directiveMainHome" > $root/web/js/directives/home.js
+
+		read -r -d '' directiveMainAbout <<- "EOF"
+			angular.module('app')
+			.directive('appMainAbout', function() {
+				\treturn {
+					\t\ttemplateUrl: 'partials/main-content/about.html'
+				\t}
+			});
+			EOF
+		printf "$directiveMainAbout" > $root/web/js/directives/about.js
+
+		read -r -d '' directiveMainContact <<- "EOF"
+			angular.module('app')
+			.directive('appMainContact', function() {
+				\treturn {
+					\t\ttemplateUrl: 'partials/main-content/contact.html'
+				\t}
+			});
+			EOF
+		printf "$directiveMainContact" > $root/web/js/directives/contact.js
+
+	fi
 }
 
 # Adding Gulp Task Runner to Project
