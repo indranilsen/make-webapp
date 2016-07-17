@@ -597,6 +597,78 @@ addFiles() {
 
 	addJSDirectives
 	addJSControllers
+	addPartials
+}
+
+# Adding Partials to Project
+# --------------------
+# Adding content to partials, pointing to the 
+# appropriate controllers.
+# --------------------
+addPartials() {
+	if [ $initTemp -eq 1 ]; then
+		read -r -d '' partialHeader <<- "EOF"
+			<header ng-controller="headerController">
+				\t<div class="header-cont">
+					\t\t<nav class="content home">
+						\t\t\t<ul>
+							\t\t\t\t<li><a ui-sref="home"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+						\t\t\t</ul>
+					\t\t</nav>
+
+					\t\t<nav class="content links">
+						\t\t\t<ul>
+							\t\t\t\t<li><a ui-sref="about">About</a></li>
+							\t\t\t\t<li><a ui-sref="contact">Contact</a></li>
+						\t\t\t</ul>
+					\t\t</nav>
+				\t</div>
+			</header>
+			EOF
+		printf "$partialHeader" >$root/web/partials/header/header.html
+
+		read -r -d '' partialMain <<- "EOF"
+			<main ng-controller="mainController">
+				\t<div class="main-cont">
+					\t\t<div ui-view></div>
+				\t</div>
+			</main>
+			EOF
+		printf "$partialMain" >$root/web/partials/main-content/main.html
+
+		read -r -d '' partialFooter <<- "EOF"
+			<footer ng-controller="footerController">
+				\t<div class="footer-cont">
+					\t\t<ul>
+						\t\t\t<li>[Project Name]</li>
+						\t\t\t<li>&copy; 2016 [Author]. All rights reserverd.</li>
+					\t\t</ul>
+				\t</div>
+			</footer>
+			EOF
+		printf "$partialFooter" >$root/web/partials/footer/footer.html
+
+		read -r -d '' partialMainHome <<- "EOF"
+			<section ng-controller="homeController">
+				\t[HOME PARTIAL]
+			</section>
+			EOF
+		printf "$partialMainHome" >$root/web/partials/main-content/home.html
+
+		read -r -d '' partialMainAbout <<- "EOF"
+			<section ng-controller="aboutController">
+				\t[ABOUT PARTIAL]
+			</section>
+			EOF
+		printf "$partialMainAbout" >$root/web/partials/main-content/about.html
+
+		read -r -d '' partialMainContact <<- "EOF"
+			<section ng-controller="contactController">
+				\t[CONTACT PARTIAL]
+			</section>
+			EOF
+		printf "$partialMainContact" >$root/web/partials/main-content/contact.html
+	fi
 }
 
 # Adding Directives to Project
