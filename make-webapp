@@ -488,6 +488,42 @@ addStylesMainCSS() {
 }
 
 # --------------------
+# Adding content to app.js
+# --------------------
+addAppJS() {
+	if [ $initTemp -eq 1 ]; then
+	read -r -d '' appJsContent <<- "EOF"
+		angular.module('app',['ui.router']);
+
+		angular.module('app')
+		.config(function($stateProvider, $urlRouterProvider) {
+		    
+		    \t$urlRouterProvider.otherwise('/home');
+		    
+		    \t$stateProvider
+		    	\t\t.state('home', {
+		            \t\t\turl: '/home',
+		            \t\t\ttemplate: "<app-main-home>"
+		        \t\t})
+		        \t\t.state('about', {
+		            \t\t\turl: '/about',
+		            \t\t\ttemplate: "<app-main-about>"
+		        \t\t})
+		        \t\t.state('contact', {
+		            \t\t\turl: '/contact',
+		            \t\t\ttemplate: "<app-main-contact>"
+		        \t\t});
+		})
+		.run(function() {
+			\tconsole.log("Earthquake App started");
+		});
+		EOF
+	fi
+
+	printf "$appJsContent"
+}
+
+# --------------------
 # Adding content to gulpfile.js
 # --------------------
 addGulpFile() {
@@ -557,6 +593,7 @@ addFiles() {
 	addGitIgnore > $root/.gitignore
 	addIndexHTML > $root/web/index.html
 	addStylesMainCSS > $root/web/css/styles-main.css
+	addAppJS > $root/web/js/app.js
 }
 
 # Adding Gulp Task Runner to Project
