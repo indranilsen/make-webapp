@@ -31,7 +31,7 @@ case "$1" in
 	Options:
 	-h, --help                       Print usage information
 	-n, --name    [project_name]     Name of project
-	-t, --template					 Initialize project with a template
+	-t, --template					 Initialize project with a template and css
 	-l, --logfile [path]             Specify path for log file as parameter
 	-s, --silent                     Do not print log messages to standard output
 	-v, --version                    Prints script version to standard output
@@ -56,6 +56,7 @@ case "$1" in
 	--template | -t)
 		passedArgs+=("t")
 		initTemp=1
+		css=1
 		;;
 	--logfile | -l)
 		passedArgs+=("l")
@@ -267,6 +268,7 @@ promptToMakeTemplate() {
 			templateResponse=$(echo "$templateResponse" | awk '{print tolower($0)}')
 			if [ $templateResponse == 'y' ] || [ $templateResponse == 'yes' ]; then
 				initTemp=1
+				echo
 				read -p "Include CSS?(y/n) " cssResponse
 				while [[ -z "$cssResponse" ]]; do
 				        read -p "Answer required. " cssResponse
@@ -784,6 +786,154 @@ addJSControllers() {
 	fi
 }
 
+# Adding CSS to Project
+# --------------------
+# Adding CSS to template HTML
+# --------------------
+addCSS() {
+	if [ $initTemp -eq 1 ] && [ $css -eq 1 ]; then
+
+		log -m "Adding content to CSS files ... "
+
+		read -r -d '' cssPageOverall <<- "EOF"
+			body {
+				\tmargin: 0;
+				\tbackground: #FFF;
+				\tfont-family: HelveticaNeue-Light;
+			}
+
+			li:focus,
+			p:focus,
+			div:focus,
+			img:focus,
+			span:focus{
+			  \toutline:none !important;
+			  \tborder: 0;
+			}
+			EOF
+		printf "$cssPageOverall" > $root/web/css/page-overall/style.css
+
+		read -r -d '' cssHeader <<- "EOF"
+			.header-cont {
+				\tdisplay: flex;
+				\tflex-wrap: wrap;
+				\tjustify-content: space-between;
+				\tbackground: #343434;
+				\theight: 5vh;
+			}
+
+			.header-cont .content ul{
+				\tdisplay: flex;
+				\tflex-wrap: wrap;
+				\tjustify-content: space-between;
+
+				\tlist-style-type: none;
+				\tpadding: 0;
+			  	\tmargin: 0;
+			}
+
+			.header-cont .content ul li {
+				\tdisplay: flex;
+				\tjustify-content: center;
+				\tflex: 1 1 auto;
+			}
+
+			.header-cont .content ul li a {
+				\tcursor: pointer;
+			}
+
+			.header-cont .home {
+				\twidth: 5%%;
+			}
+
+			.header-cont .home ul {
+				\theight: 100%%;
+				\tdisplay: flex;
+				\talign-items: center;
+			}
+
+			.header-cont .home ul li a {
+				\tdisplay: flex;
+				\tjustify-content: center;
+				\tcolor: #F0F5F5;
+				\tfont-size: 150%%;
+				\ttext-decoration: none;
+				\ttransition: all 300ms ease-out;
+			}
+
+			.header-cont .home ul li a:hover {
+				\tcolor: #69BA49;
+			}
+
+			.header-cont .links {
+				\twidth: 40%%;
+			}
+
+			.header-cont .links ul {
+				\theight: 100%%;
+				\tdisplay: flex;
+				\talign-items: center;
+			}
+
+			.header-cont .links ul li a {
+				\tcolor: #F0F5F5;
+				\tline-height: normal;
+				\ttext-decoration: none;
+				\ttext-transform: uppercase;
+				\tfont-size: .8em;
+				\ttransition: all 300ms ease-out;
+			}
+
+			.header-cont .links ul li a:hover {
+				\tcolor: #69BA49;
+			}
+			EOF
+		printf "$cssHeader" > $root/web/css/header/style.css
+
+		read -r -d '' cssMain <<- "EOF"
+			.main-cont {
+				\theight: 85vh;
+			}
+			EOF
+		printf "$cssMain" > $root/web/css/main-content/style.css
+
+		read -r -d '' cssFooter <<- "EOF"
+			.footer-cont {
+				\tbackground: #343434;
+				\tdisplay: flex;
+				\theight: 10vh;
+			}
+
+			.footer-cont ul {
+				\tdisplay: flex;
+				\tflex: 1 1 100%%;
+				\tflex-direction: column;
+				\tlist-style: none;
+			}
+
+			.footer-cont ul li {
+				\tdisplay: flex;
+				\tjustify-content: center;
+				\talign-items: center;
+				\tcolor: #F0F5F5;
+				\theight: 50%%;
+			}
+
+			.footer-cont ul li:first-child {
+				\ttext-transform: uppercase;
+				\tfont-size: 1em;
+			}
+
+			.footer-cont ul li:last-child {
+				\tfont-size: 0.8em;
+			}
+			EOF
+		printf "$cssFooter" > $root/web/css/footer/style.css
+
+		log -m "CSS complete"
+	fi
+}
+
 # Making Files
 # --------------------
 # Adding different files to the project and concatenating 
@@ -839,6 +989,7 @@ addFiles() {
 	addJSDirectives
 	addJSControllers
 	addPartials
+	addCSS
 }
 
 # Adding Gulp Task Runner to Project
@@ -895,4 +1046,3 @@ main() {
 # ========================================
 
 main
-
