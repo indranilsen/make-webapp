@@ -90,7 +90,7 @@ root="$(pwd)/$projectName"
 homebrewDependencies=("node")
 install=()
 
-nodeDevDependencies=("gulp" "gulp-autoprefixer")
+nodeDevDependencies=("gulp" "gulp-autoprefixer" "gulp-connect")
 nodeProdDependencies=()
 
 blue=$(tput setaf 4)
@@ -260,6 +260,7 @@ checkReqArgs() {
 # --------------------
 promptToMakeTemplate() {
 	if [ $initTemp -ne 1 ]; then
+		echo
 		read -p "Initialize with template?(y/n) " templateResponse
 		if [ ! -z $templateResponse ]; then
 			templateResponse=$(echo "$templateResponse" | awk '{print tolower($0)}')
@@ -267,6 +268,7 @@ promptToMakeTemplate() {
 				initTemp=1
 			fi
 		fi
+		echo
 	fi
 }
 
@@ -275,7 +277,7 @@ promptToMakeTemplate() {
 # Aks the user to install additional node packages
 # --------------------
 promptAdditionalPackageInstall() {
-
+	echo
 	log -n "Default packages:"
 	for ((i = 0; i < ${#nodeDevDependencies[@]}; i++))
 	do
@@ -545,59 +547,19 @@ addGulConfigFile() {
 	echo -e "var config = {\n\n}\n\nmodule.exports = config;"
 }
 
-# Making Files
+# Adding Tasks to Gulp
 # --------------------
-# Adding different files to the project and concatenating 
-# content to them.
+# Adding to tasks to gulpfile.js
 # --------------------
-addFiles() {
-	log -m "Adding content to files ..."
-	touch $root/.gitignore
-	touch $root/README.md
-	
-	touch $root/web/index.html
-	
-	touch $root/web/css/styles-main.css
+addGulpTasks() {
+	read -r -d '' tasks <<- "EOF"
+		\ngulp.task('server', function() {
+			\tconnect.server();
+		});
 
-	touch $root/web/css/header/style.css
-	touch $root/web/css/main-content/style.css
-	touch $root/web/css/main-content/about/style.css
-	touch $root/web/css/main-content/contact/style.css
-	touch $root/web/css/main-content/home/style.css
-	touch $root/web/css/footer/style.css
-	touch $root/web/css/page-overall/style.css
-	
-	touch $root/web/js/app.js
-
-	touch $root/web/js/controllers/header/headerController.js
-	touch $root/web/js/controllers/main-content/mainController.js
-	touch $root/web/js/controllers/main-content/aboutController.js
-	touch $root/web/js/controllers/main-content/contactController.js
-	touch $root/web/js/controllers/main-content/homeController.js
-	touch $root/web/js/controllers/footer/footerController.js
-
-	touch $root/web/js/directives/about.js
-	touch $root/web/js/directives/contact.js
-	touch $root/web/js/directives/header.js
-	touch $root/web/js/directives/footer.js
-	touch $root/web/js/directives/main.js
-	touch $root/web/js/directives/home.js
-
-	touch $root/web/partials/header/header.html
-	touch $root/web/partials/footer/footer.html
-	touch $root/web/partials/main-content/about.html
-	touch $root/web/partials/main-content/main.html
-	touch $root/web/partials/main-content/contact.html
-	touch $root/web/partials/main-content/home.html
-
-	addGitIgnore > $root/.gitignore
-	addIndexHTML > $root/web/index.html
-	addStylesMainCSS > $root/web/css/styles-main.css
-	addAppJS > $root/web/js/app.js
-
-	addJSDirectives
-	addJSControllers
-	addPartials
+		gulp.task('default', ['server']);
+		EOF
+	printf "$tasks"
 }
 
 # Adding Partials to Project
@@ -607,6 +569,9 @@ addFiles() {
 # --------------------
 addPartials() {
 	if [ $initTemp -eq 1 ]; then
+
+		log -m "Adding content to partials ..."
+
 		read -r -d '' partialHeader <<- "EOF"
 			<header ng-controller="headerController">
 				\t<div class="header-cont">
@@ -668,6 +633,8 @@ addPartials() {
 			</section>
 			EOF
 		printf "$partialMainContact" >$root/web/partials/main-content/contact.html
+
+		log -m "Partials complete"
 	fi
 }
 
@@ -678,6 +645,8 @@ addPartials() {
 # --------------------
 addJSDirectives() {
 	if [ $initTemp -eq 1 ]; then
+
+		log -m "Adding content to directives ... "
 
 		read -r -d '' directiveHeader <<- "EOF"
 			angular.module('app')
@@ -739,6 +708,7 @@ addJSDirectives() {
 			EOF
 		printf "$directiveMainContact" > $root/web/js/directives/contact.js
 
+		log -m "Directives complete"
 	fi
 }
 
@@ -749,6 +719,9 @@ addJSDirectives() {
 # --------------------
 addJSControllers() {
 	if [ $initTemp -eq 1 ]; then
+
+		log -m "Adding content to controllers ... "
+
 		read -r -d '' controllerHeader <<- "EOF"
 			angular.module('app')
 			.controller('headerController', function($scope) {
@@ -796,7 +769,67 @@ addJSControllers() {
 			});
 			EOF
 		printf "$controllerMainContact" > $root/web/js/controllers/main-content/contactController.js
+
+		log -m "Controllers complete"
+
 	fi
+}
+
+# Making Files
+# --------------------
+# Adding different files to the project and concatenating 
+# content to them.
+# --------------------
+addFiles() {
+	log -m "Making files"
+	touch $root/.gitignore
+	touch $root/README.md
+	
+	touch $root/web/index.html
+	
+	touch $root/web/css/styles-main.css
+
+	touch $root/web/css/header/style.css
+	touch $root/web/css/main-content/style.css
+	touch $root/web/css/main-content/about/style.css
+	touch $root/web/css/main-content/contact/style.css
+	touch $root/web/css/main-content/home/style.css
+	touch $root/web/css/footer/style.css
+	touch $root/web/css/page-overall/style.css
+	
+	touch $root/web/js/app.js
+
+	touch $root/web/js/controllers/header/headerController.js
+	touch $root/web/js/controllers/main-content/mainController.js
+	touch $root/web/js/controllers/main-content/aboutController.js
+	touch $root/web/js/controllers/main-content/contactController.js
+	touch $root/web/js/controllers/main-content/homeController.js
+	touch $root/web/js/controllers/footer/footerController.js
+
+	touch $root/web/js/directives/about.js
+	touch $root/web/js/directives/contact.js
+	touch $root/web/js/directives/header.js
+	touch $root/web/js/directives/footer.js
+	touch $root/web/js/directives/main.js
+	touch $root/web/js/directives/home.js
+
+	touch $root/web/partials/header/header.html
+	touch $root/web/partials/footer/footer.html
+	touch $root/web/partials/main-content/about.html
+	touch $root/web/partials/main-content/main.html
+	touch $root/web/partials/main-content/contact.html
+	touch $root/web/partials/main-content/home.html
+
+	log -m "Generating content ... "
+
+	addGitIgnore > $root/.gitignore
+	addIndexHTML > $root/web/index.html
+	addStylesMainCSS > $root/web/css/styles-main.css
+	addAppJS > $root/web/js/app.js
+
+	addJSDirectives
+	addJSControllers
+	addPartials
 }
 
 # Adding Gulp Task Runner to Project
@@ -807,7 +840,7 @@ addJSControllers() {
 # that are installed as dev dependencies.
 # --------------------
 gulpSetup() {
-	log -m "Setting up Gulp Task Runner for project ..."
+	log -m "Setting up Gulp Task Runner for project"
 	
 	cd $root/web
 		mkdir gulp_config
@@ -816,12 +849,14 @@ gulpSetup() {
 	touch $root/web/gulpfile.js
 	touch $root/web/gulp_config/config.js
 
+	log -m "Adding taks to Gulp File ... "
 	addGulpFile > $root/web/gulpfile.js
+	addGulpTasks >> $root/web/gulpfile.js
 	addGulConfigFile > $root/web/gulp_config/config.js
 
 	cd $root/web
-	# npm init
-	# installNpmDependencies
+	npm init
+	installNpmDependencies
 	cd ..
 	log -m "Gulp added"
 }
@@ -829,13 +864,13 @@ gulpSetup() {
 # ========================================
 #	SETUP
 # ========================================
-# findBrew
+findBrew
 
-# checkBrewDependencies
-# installBrewDependencies
+checkBrewDependencies
+installBrewDependencies
 
-# checkReqArgs
-# promptAdditionalPackageInstall
+checkReqArgs
+promptAdditionalPackageInstall
 promptToMakeTemplate
 
 main() {
@@ -851,3 +886,4 @@ main() {
 # ========================================
 
 main
+
