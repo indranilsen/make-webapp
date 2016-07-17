@@ -18,6 +18,7 @@ version="1.1.0"
 silent=0
 saveLog=0
 initTemp=0
+css=0
 passedArgs=()
 
 while [ ! $# -eq 0 ]; do
@@ -266,6 +267,14 @@ promptToMakeTemplate() {
 			templateResponse=$(echo "$templateResponse" | awk '{print tolower($0)}')
 			if [ $templateResponse == 'y' ] || [ $templateResponse == 'yes' ]; then
 				initTemp=1
+				read -p "Include CSS?(y/n) " cssResponse
+				while [[ -z "$cssResponse" ]]; do
+				        read -p "Answer required. " cssResponse
+				done
+				cssResponse=$(echo "$cssResponse" | awk '{print tolower($0)}')
+				if [ $cssResponse == 'y' ] || [ $cssResponse == 'yes' ]; then
+					css=1
+				fi
 			fi
 		fi
 		echo
