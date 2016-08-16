@@ -547,9 +547,13 @@ addGulpFile() {
 	printf "var config = require(\'./gulp_config/config.js\');\n"
 	for devPkg in ${nodeDevDependencies[@]}
 	do
-		var="var $devPkg = require('$devPkg');"
-		if [[ $var == *['-']* ]]; then
-			var="var ${devPkg#*-} = require('$devPkg');"
+		if [[ $devPkg == "yargs" ]]; then
+			var="var argv = require('$devPkg').argv;"
+		else
+			var="var $devPkg = require('$devPkg');"
+			if [[ $var == *['-']* ]]; then
+				var="var ${devPkg#*-} = require('$devPkg');"
+			fi
 		fi
 		echo $var
 	done
