@@ -92,7 +92,11 @@ root="$(pwd)/$projectName"
 homebrewDependencies=("node")
 install=()
 
-nodeDevDependencies=("gulp" "gulp-autoprefixer" "gulp-connect")
+nodeDevDependencies=("gulp" "gulp-autoprefixer" "gulp-connect" 
+	"gulp-ng-annotate" "gulp-concat" "gulp-uglify" 
+	"gulp-jshint" "jshint-stylish" "gulp-inject" 
+	"yargs" "merge-stream" "fs" "add-stream" "gulp-clean-css" 
+	"gulp-nodemon" "gulp-notify" "del" "gulp-connect")
 nodeProdDependencies=()
 
 blue=$(tput setaf 4)
