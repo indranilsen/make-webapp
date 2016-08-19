@@ -691,14 +691,14 @@ addGulpTasks() {
 			\tvar target = gulp.src(config.LANDING_PAGE);
 			
 			\tvar css_sources = gulp.src(config.css.tasks.styles, {read: true})
-								\t\t\t\t\t.pipe(concat(inject_prepend_css_url+config.css.concat_file_name()));
+								\t\t\t\t\t\t.pipe(concat(inject_prepend_css_url+config.css.concat_file_name()));
 
 			\tvar js_sources = gulp.src(config.js.tasks.scripts, {read: true})
-								\t\t\t\t\t.pipe(concat(inject_prepend_js_url+config.js.concat_file_name()));
+								\t\t\t\t\t\t.pipe(concat(inject_prepend_js_url+config.js.concat_file_name()));
 
 			\treturn target.pipe(inject(css_sources,config.inject.injectOptionsCss))
-				\t.pipe(inject(js_sources,config.inject.injectOptionsJs))
-				\t.pipe(gulp.dest(config.prod.main_folder));
+				\t\t.pipe(inject(js_sources,config.inject.injectOptionsJs))
+				\t\t.pipe(gulp.dest(config.prod.main_folder));
 		});
 
 		gulp.task('nodemon', ['index'], function (cb) {
