@@ -562,8 +562,44 @@ addGulpFile() {
 # --------------------
 # Adding content to config.js
 # --------------------
-addGulConfigFile() {
-	echo -e "var config = {\n\n}\n\nmodule.exports = config;"
+addGulpConfigFile() {
+	# echo -e "var config = {\n
+
+	# \n}\n\nmodule.exports = config;"
+	read -r -d '' gulpConfig <<- "EOF"
+		var config = {\n
+		\t\"VERSION\": 1.0,
+		\t\"APP_NAME\": \"%s\",
+		\t\"LANDING_PAGE\": \"index.html\",
+		\t\"SERVER\": \"server.js\",
+		\t\"folders\": {
+		\t\t\"css\":\"css\",
+		\t\t\"js\":\"js\",
+		\t\t\"partials\":\"partials\",
+		\t\t\"img\":\"img\",	
+		\t},
+		\t\"inject\": {
+		\t\t\"injectOptionsCss\": {
+		\t\t\tignorePath: \'css\',
+		\t\t\taddRootSlash: false,
+		\t\t\ttransform: function(elm){
+		\t\t\t\tvar prepend = '/';
+		\t\t\t\treturn '<link rel="stylesheet" href="'+prepend+elm+'">';
+		\t\t\t}
+		\t\t},
+		\t\t\"injectOptionsJs\": {
+		\t\t\tignorePath: \'js\',
+		\t\t\taddRootSlash: false,
+		\t\t\ttransform: function(elm){
+		\t\t\t\tvar prepend = '/';
+		\t\t\t\treturn '<script src="'+prepend+elm+'"></script>';
+		\t\t\t}
+		\t\t}
+		\t},
+				
+		\n}\n\nmodule.exports = config;
+		EOF
+	printf "$gulpConfig" $projectName
 }
 
 # Adding Tasks to Gulp
@@ -1020,11 +1056,11 @@ gulpSetup() {
 	log -m "Adding taks to Gulp File ... "
 	addGulpFile > $root/web/gulpfile.js
 	addGulpTasks >> $root/web/gulpfile.js
-	addGulConfigFile > $root/web/gulp_config/config.js
+	addGulpConfigFile > $root/web/gulp_config/config.js
 
 	cd $root/web
-	npm init
-	installNpmDependencies
+	# npm init
+	# installNpmDependencies
 	cd ..
 	log -m "Gulp added"
 }
