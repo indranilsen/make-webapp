@@ -567,7 +567,7 @@ addGulpConfigFile() {
 
 	# \n}\n\nmodule.exports = config;"
 	read -r -d '' gulpConfig <<- "EOF"
-		var config = {\n
+		var config = {
 		\t\"VERSION\": 1.0,
 		\t\"APP_NAME\": \"%s\",
 		\t\"LANDING_PAGE\": \"index.html\",
@@ -596,8 +596,36 @@ addGulpConfigFile() {
 		\t\t\t}
 		\t\t}
 		\t},
-				
-		\n}\n\nmodule.exports = config;
+		\t\"prod\": {
+		\t\t\"main_folder\": \"dist\"
+		\t},
+		\t\"css\": {
+		\t\t\"tasks\": {
+		\t\t\t\"styles\": [\"css/**/*.css\",\"!css/styles-main.css\"]
+		\t\t},
+		\t\tconcat_file_name : function() {
+		\t\t\treturn config.APP_NAME+'-v'+config.VERSION+'.min.css';
+		\t\t}
+		\t},
+		\t\"partials\": {
+		\t\t\"tasks\": {
+		\t\t\t\"src\": \"partials/**/*\"
+		\t\t}
+		\t},
+		\t\"js\": {
+		\t\t\"tasks\": {
+		\t\t\t\"scripts\": \"js/**/*.js\"
+		\t\t},
+		\t\tconcat_file_name : function() {
+		\t\t\treturn config.APP_NAME+'-v'+config.VERSION+'.min.js';
+		\t\t}
+		\t},
+		\t\"img\": {
+		\t\t\"tasks\": {
+		\t\t\t\"src\": \"img/**/*\"
+		\t\t}
+		\t}
+		};\n\nmodule.exports = config;
 		EOF
 	printf "$gulpConfig" $projectName
 }
