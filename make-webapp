@@ -701,7 +701,28 @@ addGulpTasks() {
 				\t.pipe(gulp.dest(config.prod.main_folder));
 		});
 
-		gulp.task('default', ['server']);
+		gulp.task('nodemon', ['index'], function (cb) {
+			\tvar started = false;
+			\tvar port = argv.port || 3000;
+			\tvar prod = argv.prod  ? argv.prod :'';
+
+			\treturn nodemon({
+				\t\tscript: config.SERVER,
+				\t\text: 'js html css',
+				\t\targs: ["--port="+ port ,"--prod="+ prod], 
+			\t}).on('start', function () {
+				\t\tif (!started) {
+					\t\t\tcb();
+					\t\t\tstarted = true;
+					\t\t\tgulp.src(config.SERVER)
+						\t\t\t\t.pipe(notify('App Started...'));
+				\t\t}
+			\t}).on('restart', function(){
+				\t\t// when the app has restarted
+			\t});
+		});
+
+		gulp.task('default', ['nodemon']);
 		EOF
 	printf "$tasks"
 }
