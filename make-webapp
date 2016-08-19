@@ -639,7 +639,10 @@ addGulpTasks() {
 		\ngulp.task('server', function() {
 			\tconnect.server();
 		});
-
+		
+		gulp.task('clean', function(cb) {
+			\tdel([config.prod.main_folder],cb);
+		});
 		gulp.task('default', ['server']);
 		EOF
 	printf "$tasks"
