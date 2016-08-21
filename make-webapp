@@ -565,7 +565,6 @@ addServerJS() {
 		app.listen(port);
 		console.log("Server listening on port " + port + " with mode prod? "+ (argv.prod ? true:false));
 		EOF
-	fi
 
 	printf "$serverJsContent"
 }
@@ -1129,6 +1128,8 @@ addFiles() {
 	touch $root/README.md
 	
 	touch $root/web/index.html
+
+	touch $root/web/server.js
 	
 	touch $root/web/css/styles-main.css
 
@@ -1169,6 +1170,7 @@ addFiles() {
 	addIndexHTML > $root/web/index.html
 	addStylesMainCSS > $root/web/css/styles-main.css
 	addAppJS > $root/web/js/app.js
+	addServerJS > $root/web/server.js
 
 	addJSDirectives
 	addJSControllers
