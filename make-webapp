@@ -1201,8 +1201,8 @@ gulpSetup() {
 	addGulpConfigFile > $root/web/gulp_config/config.js
 
 	cd $root/web
-	# npm init
-	# installNpmDependencies
+	npm init
+	installNpmDependencies
 	cd ..
 	log -m "Gulp added"
 }
