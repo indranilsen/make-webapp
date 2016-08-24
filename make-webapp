@@ -185,7 +185,7 @@ installNpmDependencies() {
 # can be logged:
 #	e: error messages
 #	m: general message
-# 	l: activity log messages
+# l: activity log messages
 #	n: unformatted, normal messages (not logged to log file)
 # Each type is displayed differently. If a log file directory is
 # specied by --logfile '~/directory', then any log message will
@@ -1081,7 +1081,7 @@ addCSS() {
 
 		read -r -d '' cssMain <<- "EOF"
 			.main-cont {
-				\theight: 85vh;
+				\tmin-height: 85vh;
 			}
 			EOF
 		printf "$cssMain" > $root/web/css/main-content/style.css
