@@ -97,7 +97,7 @@ nodeDevDependencies=("gulp" "gulp-autoprefixer" "gulp-connect"
 	"gulp-jshint" "jshint-stylish" "gulp-inject"
 	"yargs" "merge-stream" "fs" "add-stream" "gulp-clean-css"
 	"gulp-nodemon" "gulp-notify" "del" "gulp-connect"
-	"express" "compression")
+	"express" "compression" "jshint")
 nodeProdDependencies=()
 
 blue=$(tput setaf 4)
