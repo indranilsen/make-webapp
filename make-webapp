@@ -4,7 +4,7 @@
 # ========================================
 
 # Author: Indranil Sen
-# 
+#
 # This script creates a boilerplate for an
 # AngularJS web app.
 
@@ -26,7 +26,7 @@ case "$1" in
 	--help | -h)
 		echo -n -e "\nmake-webapp [OPTION]... [FILE]...
 
-	This script creates a boilerplate project for an AngularJS web app.	
+	This script creates a boilerplate project for an AngularJS web app.
 
 	Options:
 	-h, --help                       Print usage information
@@ -92,11 +92,11 @@ root="$(pwd)/$projectName"
 homebrewDependencies=("node")
 install=()
 
-nodeDevDependencies=("gulp" "gulp-autoprefixer" "gulp-connect" 
-	"gulp-ng-annotate" "gulp-concat" "gulp-uglify" 
-	"gulp-jshint" "jshint-stylish" "gulp-inject" 
-	"yargs" "merge-stream" "fs" "add-stream" "gulp-clean-css" 
-	"gulp-nodemon" "gulp-notify" "del" "gulp-connect" 
+nodeDevDependencies=("gulp" "gulp-autoprefixer" "gulp-connect"
+	"gulp-ng-annotate" "gulp-concat" "gulp-uglify"
+	"gulp-jshint" "jshint-stylish" "gulp-inject"
+	"yargs" "merge-stream" "fs" "add-stream" "gulp-clean-css"
+	"gulp-nodemon" "gulp-notify" "del" "gulp-connect"
 	"express" "compression")
 nodeProdDependencies=()
 
@@ -112,7 +112,7 @@ colorReset=$(tput sgr0)
 
 # Checking Homebrew Package Installation
 # --------------------
-# Checking is homebrew is installed. In not found, 
+# Checking is homebrew is installed. In not found,
 # the script will install homebrew.
 # --------------------
 findBrew() {
@@ -187,8 +187,8 @@ installNpmDependencies() {
 #	m: general message
 # 	l: activity log messages
 #	n: unformatted, normal messages (not logged to log file)
-# Each type is displayed differently. If a log file directory is 
-# specied by --logfile '~/directory', then any log message will 
+# Each type is displayed differently. If a log file directory is
+# specied by --logfile '~/directory', then any log message will
 # be piped to the log file.
 # Logged messages are not output to standard output if the --silent
 # flag is specified.
@@ -201,7 +201,7 @@ log() {
 	while getopts "e:m:l:n:" option
 	do
 		case "${option}" in
-			m) TAG="$yellow[MSG] ";;	
+			m) TAG="$yellow[MSG] ";;
 			e) TAG="$red[ERR] ";;
 			l) TAG="$cyan[LOG] ";;
 			n) TAG=""; cleanPrint=true;;
@@ -210,7 +210,7 @@ log() {
 
 		shift
 
-		# Only print to log file, if a log file is specified in program 
+		# Only print to log file, if a log file is specified in program
 		# argument AND the messaged to be logged has either m, e or l flag
 		if [ $saveLog -eq 1 ] && [ $cleanPrint = false ]; then
 				echo -e "${TAG:5}[$TIMESTAMP]:\n$@\n" >> $LOG_FILE
@@ -339,7 +339,7 @@ promptAdditionalPackageInstall() {
 # --------------------
 makeDirectories() {
 	log -m Making directories...
-	
+
 	mkdir -p $root/{server,web/{css,img,js,partials}}
 
 	cd $root/web/css
@@ -352,7 +352,7 @@ makeDirectories() {
 
 	cd $root/web/partials
 		mkdir -p {directives,footer,header,main-content}
-	cd ../../..	
+	cd ../../..
 }
 
 # Adding Content to Files
@@ -361,7 +361,7 @@ makeDirectories() {
 # --------------------
 addGitIgnore() {
 	cat <<- EOF
-			
+
 			###################
 			#  MAC OS files
 			###################
@@ -486,7 +486,7 @@ addStylesMainCSS() {
 	cat <<- EOF
 		/* General page styles */
 		@import url('page-overall/style.css');
-		
+
 		/* 3rd party */
 		/*@import url('third-party/[INSERT FILE NAME].css');*/
 
@@ -515,9 +515,9 @@ addAppJS() {
 
 		angular.module('app')
 		.config(function($stateProvider, $urlRouterProvider) {
-		    
+
 		    \t$urlRouterProvider.otherwise('/home');
-		    
+
 		    \t$stateProvider
 		    	\t\t.state('home', {
 		            \t\t\turl: '/home',
@@ -578,6 +578,10 @@ addGulpFile() {
 	do
 		if [[ $devPkg == "yargs" ]]; then
 			var="var argv = require('$devPkg').argv;"
+		elif [[ $devPkg == "gulp-clean-css" ]]; then
+			var="var cleanCSS = require('gulp-clean-css');"
+		elif [[ $devPkg == "gulp-ng-annotate" ]]; then
+			var="var ngAnnotate = require('gulp-ng-annotate');"
 		else
 			var="var $devPkg = require('$devPkg');"
 			if [[ $var == *['-']* ]]; then
@@ -605,7 +609,7 @@ addGulpConfigFile() {
 		\t\t\"css\":\"css\",
 		\t\t\"js\":\"js\",
 		\t\t\"partials\":\"partials\",
-		\t\t\"img\":\"img\",	
+		\t\t\"img\":\"img\",
 		\t},
 		\t\"inject\": {
 		\t\t\"injectOptionsCss\": {
@@ -668,7 +672,7 @@ addGulpTasks() {
 		\ngulp.task('server', function() {
 			\tconnect.server();
 		});
-		
+
 		gulp.task('clean', function(cb) {
 			\tdel([config.prod.main_folder],cb);
 		});
@@ -718,7 +722,7 @@ addGulpTasks() {
 			\tvar inject_prepend_js_url = 'js/';
 
 			\tvar target = gulp.src(config.LANDING_PAGE);
-			
+
 			\tvar css_sources = gulp.src(config.css.tasks.styles, {read: true})
 								\t\t\t\t\t\t.pipe(concat(inject_prepend_css_url+config.css.concat_file_name()));
 
@@ -738,7 +742,7 @@ addGulpTasks() {
 			\treturn nodemon({
 				\t\tscript: config.SERVER,
 				\t\text: 'js html css',
-				\t\targs: ["--port="+ port ,"--prod="+ prod], 
+				\t\targs: ["--port="+ port ,"--prod="+ prod],
 			\t}).on('start', function () {
 				\t\tif (!started) {
 					\t\t\tcb();
@@ -758,7 +762,7 @@ addGulpTasks() {
 
 # Adding Partials to Project
 # --------------------
-# Adding content to partials, pointing to the 
+# Adding content to partials, pointing to the
 # appropriate controllers.
 # --------------------
 addPartials() {
@@ -834,7 +838,7 @@ addPartials() {
 
 # Adding Directives to Project
 # --------------------
-# Adding JS for directives to make the app 
+# Adding JS for directives to make the app
 # more modular.
 # --------------------
 addJSDirectives() {
@@ -908,7 +912,7 @@ addJSDirectives() {
 
 # Adding Controllers to Project
 # --------------------
-# Adding JS for controllers to make the app 
+# Adding JS for controllers to make the app
 # funcitonal.
 # --------------------
 addJSControllers() {
@@ -1119,18 +1123,18 @@ addCSS() {
 
 # Making Files
 # --------------------
-# Adding different files to the project and concatenating 
+# Adding different files to the project and concatenating
 # content to them.
 # --------------------
 addFiles() {
 	log -m "Making files"
 	touch $root/.gitignore
 	touch $root/README.md
-	
+
 	touch $root/web/index.html
 
 	touch $root/web/server.js
-	
+
 	touch $root/web/css/styles-main.css
 
 	touch $root/web/css/header/style.css
@@ -1140,7 +1144,7 @@ addFiles() {
 	touch $root/web/css/main-content/home/style.css
 	touch $root/web/css/footer/style.css
 	touch $root/web/css/page-overall/style.css
-	
+
 	touch $root/web/js/app.js
 
 	touch $root/web/js/controllers/header/headerController.js
@@ -1180,14 +1184,14 @@ addFiles() {
 
 # Adding Gulp Task Runner to Project
 # --------------------
-# Adding gulpfile.js, congig.js package.json, 
-# and installing dependencies. In addition, gulpfile.js 
-# is populated with variables referencing the packages 
+# Adding gulpfile.js, congig.js package.json,
+# and installing dependencies. In addition, gulpfile.js
+# is populated with variables referencing the packages
 # that are installed as dev dependencies.
 # --------------------
 gulpSetup() {
 	log -m "Setting up Gulp Task Runner for project"
-	
+
 	cd $root/web
 		mkdir gulp_config
 	cd ..
