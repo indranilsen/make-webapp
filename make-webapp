@@ -838,7 +838,7 @@ addPartials() {
 	fi
 }
 
-# Adding Directives to Project
+# Adding es to Project
 # --------------------
 # Adding JS for directives to make the app
 # more modular.
@@ -853,7 +853,7 @@ addJSDirectives() {
 			.directive('appHeader', function() {
 				\treturn {
 					\t\ttemplateUrl: 'partials/header/header.html'
-				\t}
+				\t};
 			});
 			EOF
 		printf "$directiveHeader" > $root/web/js/directives/header.js
@@ -863,7 +863,7 @@ addJSDirectives() {
 			.directive('appMain', function() {
 				\treturn {
 					\t\ttemplateUrl: 'partials/main-content/main.html'
-				\t}
+				\t};
 			});
 			EOF
 		printf "$directiveMain" > $root/web/js/directives/main.js
@@ -873,7 +873,7 @@ addJSDirectives() {
 			.directive('appFooter', function() {
 				\treturn {
 					\t\ttemplateUrl: 'partials/footer/footer.html'
-				\t}
+				\t};
 			});
 			EOF
 		printf "$directiveFooter" > $root/web/js/directives/footer.js
@@ -883,7 +883,7 @@ addJSDirectives() {
 			.directive('appMainHome', function() {
 				\treturn {
 					\t\ttemplateUrl: 'partials/main-content/home.html'
-				\t}
+				\t};
 			});
 			EOF
 		printf "$directiveMainHome" > $root/web/js/directives/home.js
@@ -893,7 +893,7 @@ addJSDirectives() {
 			.directive('appMainAbout', function() {
 				\treturn {
 					\t\ttemplateUrl: 'partials/main-content/about.html'
-				\t}
+				\t};
 			});
 			EOF
 		printf "$directiveMainAbout" > $root/web/js/directives/about.js
@@ -903,7 +903,7 @@ addJSDirectives() {
 			.directive('appMainContact', function() {
 				\treturn {
 					\t\ttemplateUrl: 'partials/main-content/contact.html'
-				\t}
+				\t};
 			});
 			EOF
 		printf "$directiveMainContact" > $root/web/js/directives/contact.js
