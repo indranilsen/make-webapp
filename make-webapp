@@ -582,7 +582,7 @@ addGulpFile() {
 			var="var cleanCSS = require('gulp-clean-css');"
 		elif [[ $devPkg == "gulp-ng-annotate" ]]; then
 			var="var ngAnnotate = require('gulp-ng-annotate');"
-		elif [[ $devPkg == "jshint" ]] || [[ $devPkg == "express" ]] [[ $devPkg == "compression" ]]; then
+		elif [[ $devPkg == "jshint" ]] || [[ $devPkg == "express" ]] || [[ $devPkg == "compression" ]]; then
 			continue
 		else
 			var="var $devPkg = require('$devPkg');"
