@@ -430,7 +430,9 @@ addIndexHTML() {
 			\t<title>[Insert Title]</title>
 			\t<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 			\t<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+			\t<!-- endinject -->
 			\t<link rel="stylesheet" href="css/styles-main.css" type="text/css" media="all">
+			\t<!-- endinject -->
 			\t<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 		</head>
 
@@ -439,6 +441,7 @@ addIndexHTML() {
 			\t<app-main></app-main>
 			\t<app-footer></app-footer>
 
+			<!-- inject:js -->
 			\t<script src="js/app.js"></script>
 
 			\t<script src="js/controllers/header/headerController.js"></script>
@@ -454,6 +457,7 @@ addIndexHTML() {
 			\t<script src="js/directives/about.js"></script>
 			\t<script src="js/directives/contact.js"></script>
 			\t<script src="js/directives/footer.js"></script>
+			\t<!-- endinject -->
 		</body>
 
 		<html>
